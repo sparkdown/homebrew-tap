@@ -1,0 +1,40 @@
+name: cask CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: macos-latest
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tap from checkout
+        run: |
+          brew update-reset >/dev/null 2>&1 || true
+          brew tap sparkdown/tap "$GITHUB_WORKSPACE"
+          brew tap-info sparkdown/tap
+      - name: brew style
+        run: brew style --cask sparkdown/tap/sparkdown
+      - name: brew audit
+        run: brew audit --cask --strict --online sparkdown/tap/sparkdown
+      - name: brew install
+        run: brew install --cask sparkdown/tap/sparkdown
+      - name: Check installed app (no launch)
+        run: |
+          set -euo pipefail
+          test -d /Applications/SparkDown.app
+          want=$(brew info --cask --json=v2 sparkdown/tap/sparkdown | /usr/bin/python3 -c 'import json,sys;print(json.load(sys.stdin)["casks"][0]["version"])')
+          got=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' /Applications/SparkDown.app/Contents/Info.plist)
+          echo "cask=$want app=$got"
+          test "$want" = "$got"
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' /Applications/SparkDown.app/Contents/Info.plist
+          /usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' /Applications/SparkDown.app/Contents/Info.plist || true
+      - name: brew uninstall --zap
+        run: |
+          brew uninstall --zap --cask sparkdown/tap/sparkdown
+          test ! -e /Applications/SparkDown.app
