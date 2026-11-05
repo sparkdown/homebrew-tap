@@ -18,6 +18,8 @@ jobs:
         run: |
           brew update-reset >/dev/null 2>&1 || true
           brew tap sparkdown/tap "$GITHUB_WORKSPACE"
+          # Homebrew now refuses casks from untrusted third-party taps.
+          if brew commands | grep -qx trust; then brew trust sparkdown/tap; fi
           brew tap-info sparkdown/tap
       - name: brew style
         run: brew style --cask sparkdown/tap/sparkdown
