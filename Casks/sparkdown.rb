@@ -1,6 +1,6 @@
 cask "sparkdown" do
-  version "0.4.1"
-  sha256 "2fbdf1258ce6455c5e442422e97631747069c38ad28783013a7928f1f199ceb8"
+  version "0.4.2"
+  sha256 "4108a355a1d1fd7bc600afd04a91df65af765078ad52ccef539e615abb4d7ef9"
 
   url "https://github.com/sparkdown/sparkdown/releases/download/v#{version}/SparkDown_#{version}_aarch64.dmg"
   name "SparkDown"
@@ -16,6 +16,7 @@ cask "sparkdown" do
   depends_on :macos
 
   app "SparkDown.app"
+  binary "#{appdir}/SparkDown.app/Contents/Resources/resources/bin/sparkdown"
 
   zap trash: [
     "~/Library/Application Support/com.sparkdown.editor",
