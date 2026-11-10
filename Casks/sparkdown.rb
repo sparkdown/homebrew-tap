@@ -16,7 +16,7 @@ cask "sparkdown" do
   depends_on :macos
 
   app "SparkDown.app"
-  binary "#{appdir}/SparkDown.app/Contents/Resources/bin/sparkdown"
+  binary "#{appdir}/SparkDown.app/Contents/Resources/resources/bin/sparkdown"
 
   zap trash: [
     "~/Library/Application Support/com.sparkdown.editor",
