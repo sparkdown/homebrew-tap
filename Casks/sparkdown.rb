@@ -1,6 +1,6 @@
 cask "sparkdown" do
-  version "0.4.3"
-  sha256 "cdb45b738a589f7e3a14bb954e093c6f8280fb630545d6f64e36ca1fdf404949"
+  version "0.4.4"
+  sha256 "e7cd9a795d327f8e360c6acd4f6658c0ade4a61edee956535db4e35f1f0d1edd"
 
   url "https://github.com/sparkdown/sparkdown/releases/download/v#{version}/SparkDown_#{version}_aarch64.dmg"
   name "SparkDown"
